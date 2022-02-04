@@ -1,0 +1,202 @@
+﻿<Page
+    x:Class="msgPackDecoderUno.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:msgPackDecoderUno"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"    
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#3cb454"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="FontWeight" Value="Bold"/> 
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="GreenStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Foreground" Value="#3cb454"/>
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="BlackStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Start"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Text" Value=""/>
+            <Setter Property="MinWidth" Value="100"/>
+        </Style>
+
+        <Style x:Key="Info" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            
+        </Style>
+
+        <VisualState x:Name="Focused">
+            <Storyboard>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="BackgroundElement">
+                    <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
+                </ObjectAnimationUsingKeyFrames> 
+            </Storyboard> 
+        </VisualState>
+    </Page.Resources>
+
+    <Grid RowSpacing="10"
+          Padding="10"
+          MaxWidth="980"
+          MaxHeight="980">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        
+        <!-- Controls -->
+        <StackPanel HorizontalAlignment="Center">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Button "Clear" -->
+                <StackPanel HorizontalAlignment="Center"
+                            Grid.Row="0"
+                            Grid.Column="0">
+                    <Button
+                        x:Name="ClearBtn"
+                        Content="Clear"                                               
+                        Click="clearScreenClick"/>
+                </StackPanel>
+
+                
+                <!-- Button "Browse..." -->
+                <StackPanel HorizontalAlignment="Center"                             
+                            Grid.Row="0"
+                            Grid.Column="1">
+                    <Button
+                        x:Name="BrowseBtn"
+                        Content="Browse..."                        
+                        Click="filePickerClick"/>
+                </StackPanel>
+                
+                
+                <!-- Button "Copy to clipboard" -->    
+                <StackPanel HorizontalAlignment="Center"
+                            Grid.Row="0"
+                            Grid.Column="2">
+                    <Button 
+                        x:Name="CopyBtn"
+                        Content="Copy"                       
+                        Click="copyScreenClick"/>
+                    
+                </StackPanel>                   
+            </Grid>
+        </StackPanel>
+
+        <!--#region -->
+        <!-- Second Section For Files Info-->
+        <!--#region -->
+        <Border Margin="0"
+                Grid.Row="2">
+            <StackPanel Padding="0 0 0 20"
+                        HorizontalAlignment="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>  
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Section 1 -->
+                    <!--Date TimeStamp -->
+                    <TextBlock Style="{StaticResource GreenStyle}"
+                               Text="Model TimeStamp:"                               
+                               Grid.Row="0"
+                               Grid.Column="0"/>
+
+                    <!-- Info1 -->
+                    <TextBox Style="{StaticResource Info}"
+                             x:Name="Info1"
+                             Grid.Row="0"
+                             Grid.Column="1"/>
+
+                    <!-- Section 2 -->
+                    <!-- Model Hash-->
+                    <TextBlock Style="{StaticResource GreenStyle}"
+                               Text="Model Hash:"
+                               Grid.Row="1"
+                               Grid.Column="0"/>
+
+                    <!-- Info2 -->
+                    <TextBox Style="{StaticResource Info}"
+                               x:Name="Info2"
+                               Grid.Row="1"
+                               Grid.Column="1"/>
+                               
+
+                    <!-- Section 3 -->
+                    <!-- Item Count -->
+                    <TextBlock Style="{StaticResource GreenStyle}"
+                               Text="Item Count:"
+                               Grid.Row="2"
+                               Grid.Column="0"/>
+
+                    <!-- Info3 -->
+                    <TextBox Style="{StaticResource Info}"
+                               x:Name="Info3"
+                               Grid.Row="2"
+                               Grid.Column="1"/>
+                    
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!--#region -->
+        <!-- Third Section for Deseriliazed File  -->
+        <!--#region -->
+        <StackPanel Grid.Row="3"
+                    Grid.Column="0"
+                    AllowDrop="True"
+          DragOver="OnDragOver"
+          Drop="OnDrop">
+           <!-- TODO - Make editor scrobable with scrollbar -->
+                
+            <TextBox x:Name="Editor1"
+                         Text=""
+				         Grid.Row="1"
+                         Grid.Column="0"				
+                         Margin="0 10 0 10"                                              
+                         TextWrapping="Wrap"
+                         Height="500"
+                         VerticalAlignment="Center"
+                         FontFamily="Courier New"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+            </TextBox>
+        </StackPanel>
+    </Grid>
+</Page>
